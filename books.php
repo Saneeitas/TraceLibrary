@@ -89,7 +89,7 @@ require "inc/header.php"; ?>
                                         <a href="edit-book.php? edit_book_id=<?php echo $result["id"] ?>">
                                             <i class="fas fa-edit"></i></a>
                                         |
-                                        <a href="?delete_question=<?php echo $result["id"]; ?>">
+                                        <a href="?delete_book=<?php echo $result["id"]; ?>">
                                             <i class="fas fa-trash-alt text-danger"></i></a>
                                     </td>
                                 </tr>

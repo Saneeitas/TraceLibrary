@@ -212,15 +212,32 @@ if (isset($_POST["update_book"])) {
     }
 }
 
-if (isset($_GET["delete_question"]) && !empty($_GET["delete_question"])) {
-    $id = $_GET["delete_question"];
-    //sql
-    $sql = "DELETE FROM questions WHERE id = '$id'";
-    $query = mysqli_query($connection, $sql);
-    //check if
-    if ($query) {
-        $success = "Question deleted successfully";
+if (isset($_GET["delete_book"]) && !empty($_GET["delete_book"])) {
+    $id = $_GET["delete_book"];
+
+    // Prepare and execute the SQL statement to delete from the 'book_ownership' table
+    $sqlDeleteOwnership = "DELETE FROM book_ownership WHERE book_id = ?";
+    $stmtOwnership = mysqli_prepare($connection, $sqlDeleteOwnership);
+    mysqli_stmt_bind_param($stmtOwnership, "i", $id);
+    $resultOwnership = mysqli_stmt_execute($stmtOwnership);
+    mysqli_stmt_close($stmtOwnership);
+
+    // Check if the deletion from 'book_ownership' was successful
+    if ($resultOwnership) {
+        // Now, proceed to delete from the 'books' table
+        $sqlDeleteBook = "DELETE FROM books WHERE id = ?";
+        $stmtBook = mysqli_prepare($connection, $sqlDeleteBook);
+        mysqli_stmt_bind_param($stmtBook, "i", $id);
+        $resultBook = mysqli_stmt_execute($stmtBook);
+        mysqli_stmt_close($stmtBook);
+
+        // Check if the deletion from 'books' was successful
+        if ($resultBook) {
+            $success = "Book deleted successfully";
+        } else {
+            $error = "Unable to delete book from 'books' table";
+        }
     } else {
-        $error = "Unable to delete Question";
+        $error = "Unable to delete book from 'book_ownership' table";
     }
 }
