@@ -36,8 +36,8 @@ if(!isset($_SESSION["user"])){
                          <i class="fas fa-grip-vertical"style="color:darkgreen;"></i> COURSES</a>
                  </li>    
                  <li  class="list-group-item">
-                     <a href="questions.php" class="btn">
-                         <i class="fas fa-boxes" style="color:darkgreen;"></i> QUESTIONS</a>
+                     <a href="books.php" class="btn">
+                         <i class="fas fa-boxes" style="color:darkgreen;"></i> BOOKS</a>
                  </li  class="list-group-item">
                  <li  class="list-group-item">
                       <a href="new-book.php" class="btn">

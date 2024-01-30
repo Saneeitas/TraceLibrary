@@ -194,51 +194,21 @@ if (isset($_POST["new_book"])) {
 }
 
 
-if (isset($_POST["update_question"])) {
-    $id = $_GET["edit_question_id"];
-    if ($_FILES["image"]["name"] != "") {
-        //upload image
-        $target_dir = "uploads/";
-        $url = $target_dir . basename($_FILES["image"]["name"]);
-        //move uploaded file
-        if (move_uploaded_file($_FILES["image"]["tmp_name"], $url)) {
-            //update to database
-            //parameters 
-            $course_title = $_POST["course_title"];
-            $course_code = $_POST["course_code"];
-            $session = $_POST["session"];
-            //$course_id = $_POST["course_id"];
-            $image = $url;
-            //sql
-            $sql = "UPDATE questions SET course_title ='$course_title', course_code='$course_code', 
-                    session='$session', image='$image'
+if (isset($_POST["update_book"])) {
+    $id = $_GET["edit_book_id"];
+
+    $title = $_POST["title"];
+    $author = $_POST["author"];
+    $isbn = $_POST["isbn"];
+    //sql
+    $sql = "UPDATE books SET title ='$title', author='$author',  isbn='$isbn'
                     WHERE id='$id' ";
-            $query = mysqli_query($connection, $sql);
-            //check if
-            if ($query) {
-                $success = "Question updated";
-            } else {
-                $error = "Unable to update Question";
-            }
-        }
+    $query = mysqli_query($connection, $sql);
+    //check if
+    if ($query) {
+        $success = "Book updated Successfully";
     } else {
-        //leave the upload image and
-        //update to database
-        //parameters 
-        $course_title = $_POST["course_title"];
-        $course_code = $_POST["course_code"];
-        $session = $_POST["session"];
-        //$course_id = $_POST["course_id"];   
-        //sql
-        $sql = "UPDATE questions SET course_title ='$course_title', course_code='$course_code', 
-            session='$session' WHERE id='$id' ";
-        $query = mysqli_query($connection, $sql);
-        //check if
-        if ($query) {
-            $success = "Question updated";
-        } else {
-            $error = "Unable to update question";
-        }
+        $error = "Unable to update Book";
     }
 }
 
