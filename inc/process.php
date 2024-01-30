@@ -166,16 +166,33 @@ if (isset($_POST["new_book"])) {
     $title = $_POST["title"];
     $author = $_POST["author"];
     $isbn = $_POST["isbn"];
-    //sql
-    $sql = "INSERT INTO books(title,author,isbn) VALUES('$title','$author','$isbn')";
+
+    // Insert data into the 'books' table
+    $sql = "INSERT INTO books(title, author, isbn) VALUES('$title', '$author', '$isbn')";
     $query = mysqli_query($connection, $sql);
+
     if ($query) {
-        //success message
-        $success = "Book Added Successfully";
+        // Get the ID of the inserted book
+        $bookId = mysqli_insert_id($connection);
+
+        $userId = $_SESSION["user"]["id"];
+
+
+        $sqlOwnership = "INSERT INTO book_ownership (user_id, book_id, ownership_status) VALUES ('$userId', '$bookId', 'owned')";
+        $queryOwnership = mysqli_query($connection, $sqlOwnership);
+
+        if ($queryOwnership) {
+            $success = "Book Added Successfully";
+        } else {
+
+            $error = "Unable to add Book (Ownership Error)";
+        }
     } else {
+
         $error = "Unable to add Book";
     }
 }
+
 
 if (isset($_POST["update_question"])) {
     $id = $_GET["edit_question_id"];
