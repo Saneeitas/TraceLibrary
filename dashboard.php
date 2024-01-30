@@ -6,9 +6,9 @@ if(!isset($_SESSION["user"])){
     header("location: login.php");
 }
 //check if logged in as user
-if($_SESSION["user"]["role"] == "user"){
-    header("location: index.php");
-}
+// if($_SESSION["user"]["role"] == "user"){
+//     header("location: index.php");
+// }
 //header links
  require "inc/header.php"; ?>
 
@@ -40,8 +40,8 @@ if($_SESSION["user"]["role"] == "user"){
                          <i class="fas fa-boxes" style="color:darkgreen;"></i> QUESTIONS</a>
                  </li  class="list-group-item">
                  <li  class="list-group-item">
-                      <a href="new-question.php" class="btn">
-                          <i class="fas fa-plus" style="color:darkgreen;"></i> ADD QUESTION</a>
+                      <a href="new-book.php" class="btn">
+                          <i class="fas fa-plus" style="color:darkgreen;"></i> ADD BOOK</a>
                  </li>
                  </div>
              </ul>

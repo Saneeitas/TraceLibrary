@@ -28,7 +28,8 @@ if (isset($_POST["register"])) {
 }
 
 // Function to sanitize input to prevent SQL injection and XSS
-function sanitizeInput($input) {
+function sanitizeInput($input)
+{
     // Implement your input sanitization logic here
     // For example, use mysqli_real_escape_string() for SQL injection prevention
     // Use htmlspecialchars() for XSS prevention
@@ -36,7 +37,8 @@ function sanitizeInput($input) {
 }
 
 // Function to check if a user exists in the database
-function userExists($email) {
+function userExists($email)
+{
     global $connection;
 
     $email = mysqli_real_escape_string($connection, $email);
@@ -47,7 +49,8 @@ function userExists($email) {
 }
 
 // Function to insert a new user into the database
-function insertUser($name, $email, $password) {
+function insertUser($name, $email, $password)
+{
     global $connection;
 
     $name = mysqli_real_escape_string($connection, $name);
@@ -82,7 +85,7 @@ function insertUser($name, $email, $password) {
 //     }  
 // }
 
-if(isset($_POST["login"])){
+if (isset($_POST["login"])) {
 
     $email = $_POST["email"];
     $password = $_POST["password"];
@@ -90,134 +93,118 @@ if(isset($_POST["login"])){
 
     //check if user exist
     $sql_check2 = "SELECT * FROM users WHERE email = '$email'";
-    $query_check2 = mysqli_query($connection,$sql_check2);
-    if(mysqli_fetch_assoc($query_check2)){
-       //check if email and password exist
-       $sql_check = "SELECT * FROM users WHERE email = '$email' 
+    $query_check2 = mysqli_query($connection, $sql_check2);
+    if (mysqli_fetch_assoc($query_check2)) {
+        //check if email and password exist
+        $sql_check = "SELECT * FROM users WHERE email = '$email' 
        AND password = '$encrypt_password'";
-       $query_check = mysqli_query($connection,$sql_check);
-          if($result = mysqli_fetch_assoc($query_check)){
-                //Login to dashboard
-                $_SESSION["user"] = $result;
-                   if($result["role"] == "user"){
-                        if (isset($_SESSION["url"])) {
-                            $question_id = $_SESSION["url"];
-                            header("location: view-question.php?question_id=$question_id");
-                        }
-                       //header("location: view-questions.php?");            
-                   }else{
-                       header("location: dashboard.php");
-                       } 
-                      $success = "User logged in";       
-          }else{ 
-             //user password wrong
-             $error = "User password wrong";
-          }  
-  }else{
-      //user not found
-      $error = "User email not found";
-  } 
+        $query_check = mysqli_query($connection, $sql_check);
+        if ($result = mysqli_fetch_assoc($query_check)) {
+            //Login to dashboard
+            $_SESSION["user"] = $result;
+            if ($result["role"] == "user") {
+                if (isset($_SESSION["url"])) {
+                    $question_id = $_SESSION["url"];
+                    header("location: view-question.php?question_id=$question_id");
+                }
+                header("location: dashboard.php");
+            } else {
+                header("location: dashboard.php");
+            }
+            $success = "User logged in";
+        } else {
+            //user password wrong
+            $error = "User password wrong";
+        }
+    } else {
+        //user not found
+        $error = "User email not found";
+    }
 }
 
-if(isset($_POST["add-course"])){
+if (isset($_POST["add-course"])) {
     $name = $_POST["name"];
     //sql
     $sql = "INSERT INTO courses(name) VALUES('$name')";
-    $query = mysqli_query($connection,$sql);
-    
-    if($query){
+    $query = mysqli_query($connection, $sql);
+
+    if ($query) {
         $success = "Course added";
-    }else{
+    } else {
         $error = "Unable to add Course";
     }
 }
 
-if(isset($_GET["delete_course"]) && !empty($_GET["delete_course"])){
+if (isset($_GET["delete_course"]) && !empty($_GET["delete_course"])) {
     $id = $_GET["delete_course"];
     //sql
     $sql = "DELETE FROM courses WHERE id = '$id'";
-    $query = mysqli_query($connection,$sql);
+    $query = mysqli_query($connection, $sql);
 
-    if($query){
+    if ($query) {
         $success = "course deleted";
-    }else{
+    } else {
         $error = "Unable to delete course";
     }
-
 }
 
-if(isset($_POST["edit_course"])){
+if (isset($_POST["edit_course"])) {
     $name = $_POST["name"];
     $edit_id = $_GET["edit_id"];
     //sql
     $sql = "UPDATE courses SET name = '$name' WHERE id = '$edit_id'";
-    $query = mysqli_query($connection,$sql);
-    if($query){
+    $query = mysqli_query($connection, $sql);
+    if ($query) {
         $success = "course updated";
-    }else{
+    } else {
         $error = "Unable to update course";
     }
-
 }
 
 
-if(isset($_POST["new_question"])){
-    //uploading to upload folder
-    $target_dir = "uploads/";
-    $basename = basename($_FILES["image"]["name"]);
-    $upload_file = $target_dir.$basename;
-    //move uploaded file
-    $move = move_uploaded_file($_FILES["image"]["tmp_name"],$upload_file);
-    if($move){
-        $url = $upload_file;
-        $course_title = $_POST["course_title"];
-        $course_code = $_POST["course_code"];
-        $session = $_POST["session"];
-        $course_id = $_POST["course_id"];
-        $image = $url;
-        //sql
-        $sql = "INSERT INTO questions(course_title,course_code,session,course_id,image) 
-                VALUES('$course_title','$course_code','$session','$course_id','$image')";
-        $query = mysqli_query($connection,$sql);
-        if($query){
-           //success message
-            $success = "Question Added";
-        }else{
-            $error = "Unable to add Question";
-        }  
-    }else{
-        $error = "Unable to upload image";
+if (isset($_POST["new_book"])) {
+    $title = $_POST["title"];
+    $author = $_POST["author"];
+    $isbn = $_POST["isbn"];
+    //sql
+    $sql = "INSERT INTO books(title,author,isbn) VALUES('$title','$author','$isbn')";
+    $query = mysqli_query($connection, $sql);
+    if ($query) {
+        //success message
+        $success = "Book Added Successfully";
+    } else {
+        $error = "Unable to add Book";
     }
 }
 
-if(isset($_POST["update_question"])){
+if (isset($_POST["update_question"])) {
     $id = $_GET["edit_question_id"];
-    if($_FILES["image"]["name"] != ""){
+    if ($_FILES["image"]["name"] != "") {
         //upload image
         $target_dir = "uploads/";
-        $url = $target_dir.basename($_FILES["image"]["name"]);
+        $url = $target_dir . basename($_FILES["image"]["name"]);
         //move uploaded file
-        if(move_uploaded_file($_FILES["image"]["tmp_name"],$url)){
+        if (move_uploaded_file($_FILES["image"]["tmp_name"], $url)) {
             //update to database
-             //parameters 
+            //parameters 
             $course_title = $_POST["course_title"];
             $course_code = $_POST["course_code"];
             $session = $_POST["session"];
             //$course_id = $_POST["course_id"];
-            $image = $url;    
+            $image = $url;
             //sql
             $sql = "UPDATE questions SET course_title ='$course_title', course_code='$course_code', 
                     session='$session', image='$image'
                     WHERE id='$id' ";
-            $query = mysqli_query($connection,$sql);
+            $query = mysqli_query($connection, $sql);
             //check if
-            if($query){
+            if ($query) {
                 $success = "Question updated";
-            }else{
+            } else {
                 $error = "Unable to update Question";
             }
         }
-    }else{
+    } else {
         //leave the upload image and
         //update to database
         //parameters 
@@ -228,30 +215,25 @@ if(isset($_POST["update_question"])){
         //sql
         $sql = "UPDATE questions SET course_title ='$course_title', course_code='$course_code', 
             session='$session' WHERE id='$id' ";
-        $query = mysqli_query($connection,$sql);
+        $query = mysqli_query($connection, $sql);
         //check if
-        if($query){
-        $success = "Question updated";
-        }else{
-        $error = "Unable to update question";
+        if ($query) {
+            $success = "Question updated";
+        } else {
+            $error = "Unable to update question";
         }
-
     }
 }
 
-if(isset($_GET["delete_question"]) && !empty($_GET["delete_question"])){
+if (isset($_GET["delete_question"]) && !empty($_GET["delete_question"])) {
     $id = $_GET["delete_question"];
     //sql
     $sql = "DELETE FROM questions WHERE id = '$id'";
-    $query = mysqli_query($connection,$sql);
+    $query = mysqli_query($connection, $sql);
     //check if
-    if($query){
+    if ($query) {
         $success = "Question deleted successfully";
-    }else{
+    } else {
         $error = "Unable to delete Question";
     }
 }
-
-
-
-?>
