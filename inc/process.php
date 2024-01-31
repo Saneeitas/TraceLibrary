@@ -122,17 +122,27 @@ if (isset($_POST["login"])) {
     }
 }
 
-if (isset($_POST["add-course"])) {
-    $name = $_POST["name"];
-    //sql
-    $sql = "INSERT INTO courses(name) VALUES('$name')";
-    $query = mysqli_query($connection, $sql);
+if (isset($_POST["transfer"])) {
+    
+    $bookId = $_POST['book_id']; 
+    $newOwnerId = $_POST['new_owner_id']; 
 
-    if ($query) {
-        $success = "Course added";
-    } else {
-        $error = "Unable to add Course";
+    // Update ownership in the database
+    $sqlTransferOwnership = "UPDATE book_ownership SET user_id = '$newOwnerId', ownership_status = 'borrowed' WHERE book_id = '$bookId'";
+
+   
+
+    if ($connection->connect_error) {
+        die("Connection failed: " . $connection->connect_error);
     }
+
+    if ($connection->query($sqlTransferOwnership) === TRUE) {
+        $success = "Ownership transferred successfully!";
+    } else {
+        echo "Error: " . $sqlTransferOwnership . "<br>" . $connection->error;
+    }
+
+    $connection->close();
 }
 
 if (isset($_GET["delete_course"]) && !empty($_GET["delete_course"])) {
