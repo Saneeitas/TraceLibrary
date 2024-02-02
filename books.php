@@ -75,13 +75,14 @@ require "inc/header.php"; ?>
                                 <th scope="col">Author</th>
                                 <th scope="col">ISBN</th>
                                 <th scope="col">Status</th>
+                                <th scope="col">Location</th>
                                 <th scope="col">Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php
                             $id = $_SESSION["user"]["id"];
-                            $sql = "SELECT books.id, books.title, books.author, books.isbn, book_ownership.ownership_status
+                            $sql = "SELECT books.id, books.title, books.author, books.isbn, books.location, book_ownership.ownership_status
                 FROM books
                 LEFT JOIN book_ownership ON books.id = book_ownership.book_id
                 WHERE books.user_id = '$id'";
@@ -98,6 +99,7 @@ require "inc/header.php"; ?>
                                         <td><?php echo $result["author"]; ?></td>
                                         <td><?php echo $result["isbn"]; ?></td>
                                         <td><?php echo $result["ownership_status"] ?? 'Not Owned'; ?></td>
+                                        <td><?php echo $result["location"] ?></td>
                                         <td>
                                             <a href="edit-book.php?edit_book_id=<?php echo $result["id"] ?>">
                                                 <i class="fas fa-edit"></i>
