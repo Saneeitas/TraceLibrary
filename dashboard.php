@@ -73,7 +73,7 @@ require "inc/header.php"; ?>
                     $sql = "SELECT books.id, books.title, books.author, books.isbn
             FROM books
             JOIN book_ownership ON books.id = book_ownership.book_id
-            WHERE book_ownership.user_id = ?";
+            WHERE book_ownership.user_id = ? AND book_ownership.ownership_status = 'owned'";
                     $stmt = mysqli_prepare($connection, $sql);
                     mysqli_stmt_bind_param($stmt, "i", $userId);
                     mysqli_stmt_execute($stmt);
