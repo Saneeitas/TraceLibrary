@@ -129,24 +129,47 @@ if (isset($_POST["transfer"])) {
     $user_id = $_SESSION['user']['id'];
     $ownership_status = $_POST['ownership_status'];
 
-    // Insert ownership data into the 'book_ownership' table
-    $sql = "INSERT INTO book_ownership (user_id, book_id, ownership_status) VALUES (?, ?, ?)";
-    $stmt = mysqli_prepare($connection, $sql);
+    // Check if ownership record already exists for the specified book and user
+    $existingOwnershipSql = "SELECT id FROM book_ownership WHERE user_id = ? AND book_id = ?";
+    $existingOwnershipStmt = mysqli_prepare($connection, $existingOwnershipSql);
+    mysqli_stmt_bind_param($existingOwnershipStmt, "ii", $user_id, $book_id);
+    mysqli_stmt_execute($existingOwnershipStmt);
+    mysqli_stmt_store_result($existingOwnershipStmt);
 
-    // Bind the parameters to the statement
-    mysqli_stmt_bind_param($stmt, "iss", $user_id, $book_id, $ownership_status);
+    if (mysqli_stmt_num_rows($existingOwnershipStmt) > 0) {
+        // Ownership record already exists, update the existing record
+        $updateOwnershipSql = "UPDATE book_ownership SET ownership_status = ? WHERE user_id = ? AND book_id = ?";
+        $updateOwnershipStmt = mysqli_prepare($connection, $updateOwnershipSql);
+        mysqli_stmt_bind_param($updateOwnershipStmt, "sii", $ownership_status, $user_id, $book_id);
+        $result = mysqli_stmt_execute($updateOwnershipStmt);
 
-    // Execute the statement
-    $result = mysqli_stmt_execute($stmt);
+        if ($result) {
+            $success =  "Ownership updated successfully!";
+        } else {
+            $error = "Error updating ownership: " . mysqli_error($connection);
+        }
 
-    if ($result) {
-        $success = "Ownership marked successfully!";
+        // Close the statement
+        mysqli_stmt_close($updateOwnershipStmt);
     } else {
-        $error = "Error: " . mysqli_error($connection);
+        // Ownership record doesn't exist, insert a new record
+        $insertOwnershipSql = "INSERT INTO book_ownership (user_id, book_id, ownership_status) VALUES (?, ?, ?)";
+        $insertOwnershipStmt = mysqli_prepare($connection, $insertOwnershipSql);
+        mysqli_stmt_bind_param($insertOwnershipStmt, "iss", $user_id, $book_id, $ownership_status);
+        $result = mysqli_stmt_execute($insertOwnershipStmt);
+
+        if ($result) {
+            $success = "Ownership marked successfully!";
+        } else {
+            $error = "Error: " . mysqli_error($connection);
+        }
+
+        // Close the statement
+        mysqli_stmt_close($insertOwnershipStmt);
     }
 
-    // Close the statement
-    mysqli_stmt_close($stmt);
+    // Close the statement for existing ownership check
+    mysqli_stmt_close($existingOwnershipStmt);
 }
 
 if (isset($_GET["delete_course"]) && !empty($_GET["delete_course"])) {
