@@ -44,8 +44,8 @@ require "inc/header.php"; ?>
                 <ul class="list-group">
                     <div>
                         <li class="list-group-item" style="color:darkgreen;">
-                            <a href="course.php" class="btn">
-                                <i class="fas fa-grip-vertical" style="color:darkgreen;"></i> Transfer Ownership</a>
+                            <a href="ownership.php" class="btn">
+                                <i class="fas fa-grip-vertical" style="color:darkgreen;"></i> MARK OWNERSHIP</a>
                         </li>
                         <li class="list-group-item">
                             <a href="books.php" class="btn text-danger">

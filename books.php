@@ -70,36 +70,52 @@ require "inc/header.php"; ?>
                                 <th scope="col">Title</th>
                                 <th scope="col">Author</th>
                                 <th scope="col">ISBN</th>
+                                <th scope="col">Status</th>
                                 <th scope="col">Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php
                             $id = $_SESSION["user"]["id"];
-                            $sql = "SELECT * FROM books WHERE user_id='$id' ";
+                            $sql = "SELECT books.id, books.title, books.author, books.isbn, book_ownership.ownership_status
+                FROM books
+                LEFT JOIN book_ownership ON books.id = book_ownership.book_id
+                WHERE books.user_id = '$id'";
                             $query = mysqli_query($connection, $sql);
                             $counter = 1;
-                            while ($result = mysqli_fetch_assoc($query)) {
+
+                            if (mysqli_num_rows($query) > 0) {
+                                // Books are available
+                                while ($result = mysqli_fetch_assoc($query)) {
                             ?>
-                                <tr class="table-active">
-                                    <td scope="row"><?php echo $counter; ?></td>
-                                    <td><?php echo $result["title"]; ?></td>
-                                    <td><?php echo $result["author"]; ?></td>
-                                    <td><?php echo $result["isbn"]; ?></td>
-                                    <td>
-                                        <a href="edit-book.php? edit_book_id=<?php echo $result["id"] ?>">
-                                            <i class="fas fa-edit"></i></a>
-                                        |
-                                        <a href="?delete_book=<?php echo $result["id"]; ?>">
-                                            <i class="fas fa-trash-alt text-danger"></i></a>
-                                    </td>
-                                </tr>
+                                    <tr class="table-active">
+                                        <td scope="row"><?php echo $counter; ?></td>
+                                        <td><?php echo $result["title"]; ?></td>
+                                        <td><?php echo $result["author"]; ?></td>
+                                        <td><?php echo $result["isbn"]; ?></td>
+                                        <td><?php echo $result["ownership_status"] ?? 'Not Owned'; ?></td>
+                                        <td>
+                                            <a href="edit-book.php?edit_book_id=<?php echo $result["id"] ?>">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            |
+                                            <a href="?delete_book=<?php echo $result["id"]; ?>">
+                                                <i class="fas fa-trash-alt text-danger"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
                             <?php
-                                $counter++;
+                                    $counter++;
+                                }
+                            } else {
+                                // No books available
+                                echo '<tr><td colspan="6">No books available.</td></tr>';
                             }
                             ?>
                         </tbody>
                     </table>
+
+
                 </div>
             </div>
         </div>
