@@ -234,8 +234,9 @@ if (isset($_POST["update_book"])) {
     $title = $_POST["title"];
     $author = $_POST["author"];
     $isbn = $_POST["isbn"];
+    $location = $_POST["location"];
     //sql
-    $sql = "UPDATE books SET title ='$title', author='$author',  isbn='$isbn'
+    $sql = "UPDATE books SET title ='$title', author='$author',  isbn='$isbn', location='$location'
                     WHERE id='$id' ";
     $query = mysqli_query($connection, $sql);
     //check if
