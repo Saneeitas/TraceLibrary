@@ -49,21 +49,73 @@ require "inc/header.php";
                     <h4 class="list-group-item" style="color:darkgreen;">
                         <i class="fas fa-grip-vertical"></i> BOOKS
                     </h4>
-                    <ul class="list-group">
-                        <?php
-                        $sql_c = "SELECT * FROM books ORDER BY id DESC";
-                        $query_c = mysqli_query($connection, $sql_c);
-                        while ($result_c = mysqli_fetch_assoc($query_c)) {
-                        ?>
-                            <li class="list-group-item bg-light" style="background-color:#FF6347;">
-                                <i class="fas fa-chevron-circle-right" style="color:darkgreen;"></i>
-                                <a href="course-category.php?course_category_id=<?php echo $result_c["id"]; ?>" class="btn">
-                                    <?php echo $result_c["name"] ?></a>
-                            </li>
-                        <?php
+
+                    <?php
+                    // Include your database connection script here
+                    // Example: include 'db_connection.php';
+
+                    function getUserById($connection, $userId)
+                    {
+                        $sql = "SELECT name FROM users WHERE id = ?";
+                        $stmt = mysqli_prepare($connection, $sql);
+                        mysqli_stmt_bind_param($stmt, "i", $userId);
+                        mysqli_stmt_execute($stmt);
+                        $result = mysqli_stmt_get_result($stmt);
+
+                        if ($row = mysqli_fetch_assoc($result)) {
+                            return $row['name'];
+                        } else {
+                            return 'N/A';
                         }
-                        ?>
-                    </ul>
+                    }
+
+                    $sql = "SELECT books.id, books.title, books.author, books.isbn, 
+                       book_ownership.user_id, book_ownership.ownership_status
+                FROM books
+                LEFT JOIN book_ownership ON books.id = book_ownership.book_id";
+                    $result = mysqli_query($connection, $sql);
+
+                    if ($result) {
+                        if (mysqli_num_rows($result) > 0) {
+                            echo '<table class="table">';
+                            echo '<thead>';
+                            echo '<tr>';
+                            echo '<th>#</th>';
+                            echo '<th>Title</th>';
+                            echo '<th>Author</th>';
+                            echo '<th>ISBN</th>';
+                            echo '<th>Owner</th>';
+                            echo '<th>Status</th>';
+                            echo '</tr>';
+                            echo '</thead>';
+                            echo '<tbody>';
+
+                            $counter = 1; // Initialize counter
+
+                            while ($row = mysqli_fetch_assoc($result)) {
+                                echo '<tr>';
+                                echo '<td>' . $counter++ . '</td>'; // Display and increment the counter
+                                echo '<td>' . $row['title'] . '</td>';
+                                echo '<td>' . $row['author'] . '</td>';
+                                echo '<td>' . $row['isbn'] . '</td>';
+                                echo '<td>' . getUserById($connection, $row['user_id']) . '</td>';
+                                echo '<td>' . $row['ownership_status'] . '</td>';
+                                echo '</tr>';
+                            }
+
+                            echo '</tbody>';
+                            echo '</table>';
+                        } else {
+                            echo '<p>No books found.</p>';
+                        }
+                    } else {
+                        echo '<p>Error fetching books: ' . mysqli_error($connection) . '</p>';
+                    }
+
+                    // Close the database connection
+                    mysqli_close($connection);
+                    ?>
+
                 </div>
             </div>
             <div class="col-4">
