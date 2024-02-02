@@ -125,6 +125,7 @@ require "inc/header.php"; ?>
                                 <div class="form-group">
                                     <label for="ownership_status">Select Status:</label>
                                     <select name="ownership_status" class="form-select" required>
+                                        <option value="available">Available</option>
                                         <option value="owned">Owned</option>
                                         <option value="borrowed">Borrowed</option>
                                     </select>

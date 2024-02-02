@@ -220,7 +220,7 @@ if (isset($_POST["new_book"])) {
     if ($result) {
         $success = "Book added successfully!";
     } else {
-        $error = "Error: " . mysqli_error($connection);
+        $error = "Unable to add Book";
     }
 
     // Close the statement

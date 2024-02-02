@@ -82,6 +82,8 @@ require "inc/header.php"; ?>
                     return mysqli_fetch_all($result, MYSQLI_ASSOC);
                 }
 
+
+
                 // Function to fetch borrowing history by user ID
                 function getBorrowingHistory($connection, $userId)
                 {
@@ -97,14 +99,30 @@ require "inc/header.php"; ?>
                     return mysqli_fetch_all($result, MYSQLI_ASSOC);
                 }
 
+                // Function to fetch available history by user ID
+                function getAvailableHistory($connection, $userId)
+                {
+                    $sql = "SELECT books.id, books.title, books.author, books.isbn, book_ownership.ownership_status
+            FROM books
+            JOIN book_ownership ON books.id = book_ownership.book_id
+            WHERE book_ownership.user_id = ? AND book_ownership.ownership_status = 'available'";
+                    $stmt = mysqli_prepare($connection, $sql);
+                    mysqli_stmt_bind_param($stmt, "i", $userId);
+                    mysqli_stmt_execute($stmt);
+                    $result = mysqli_stmt_get_result($stmt);
+
+                    return mysqli_fetch_all($result, MYSQLI_ASSOC);
+                }
+
                 // Check if the user is logged in
                 if (isset($_SESSION['user']) && isset($_SESSION['user']['id'])) {
                     $userId = $_SESSION['user']['id'];
                     $userProfile = getUserById($connection, $userId);
                     $ownedBooks = getOwnedBooks($connection, $userId);
                     $borrowingHistory = getBorrowingHistory($connection, $userId);
+                    $availableHistory = getAvailableHistory($connection, $userId);
 
-                    if ($userProfile && $ownedBooks !== null && $borrowingHistory !== null) {
+                    if ($userProfile && $ownedBooks !== null && $borrowingHistory !== null&& $availableHistory !== null) {
                         // Display user information
                         echo '<div class="card">';
                         echo '    <div class="card-body">';
@@ -144,6 +162,37 @@ require "inc/header.php"; ?>
                             echo '</table>';
                         } else {
                             echo '<p>No owned books yet.</p>';
+                        }
+
+                        // Display available history in a table
+                        echo '<h3>Available History</h3>';
+                        if (count($availableHistory) > 0) {
+                            echo '<table class="table">';
+                            echo '<thead>';
+                            echo '<tr>';
+                            echo '<th>#</th>';
+                            echo '<th>Title</th>';
+                            echo '<th>Author</th>';
+                            echo '<th>ISBN</th>';
+                            echo '</tr>';
+                            echo '</thead>';
+                            echo '<tbody>';
+
+                            $counter = 1; // Initialize counter
+
+                            foreach ($availableHistory as $availabledBook) {
+                                echo '<tr>';
+                                echo '<td>' . $counter++ . '</td>'; // Display and increment the counter
+                                echo '<td>' . $availabledBook['title'] . '</td>';
+                                echo '<td>' . $availabledBook['author'] . '</td>';
+                                echo '<td>' . $availabledBook['isbn'] . '</td>';
+                                echo '</tr>';
+                            }
+
+                            echo '</tbody>';
+                            echo '</table>';
+                        } else {
+                            echo '<p>No available history.</p>';
                         }
 
                         // Display borrowing history in a table

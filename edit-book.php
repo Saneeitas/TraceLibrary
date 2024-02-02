@@ -44,6 +44,10 @@ require "inc/header.php"; ?>
                 <ul class="list-group">
                     <div>
                         <li class="list-group-item" style="color:darkgreen;">
+                            <a href="dashboard.php" class="btn">
+                                <i class="fas fa-grip-vertical" style="color:darkgreen;"></i> HOME</a>
+                        </li>
+                        <li class="list-group-item" style="color:darkgreen;">
                             <a href="ownership.php" class="btn">
                                 <i class="fas fa-grip-vertical" style="color:darkgreen;"></i> MARK OWNERSHIP</a>
                         </li>
@@ -77,10 +81,21 @@ require "inc/header.php"; ?>
                     }
                     ?>
                     <form action="" method="post" enctype="multipart/form-data">
-                        <div class="form-group">
-                            <label for="">Title</label>
-                            <input type="text" name="title" placeholder="Enter title" value="<?php echo $result["title"] ?>" class="form-control" id="">
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label for="">Title</label>
+                                    <input type="text" name="title" placeholder="Enter title" value="<?php echo $result["title"] ?>" class="form-control" id="">
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label for="">Location</label>
+                                    <input type="text" name="location" placeholder="Enter location" value="<?php echo $result["location"] ?>" class="form-control" id="">
+                                </div>
+                            </div>
                         </div>
+
                         <div class="row">
                             <div class="col-6">
                                 <div class="form-group">
