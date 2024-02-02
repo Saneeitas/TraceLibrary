@@ -34,7 +34,7 @@ require "inc/header.php"; ?>
                     <div>
                         <li class="list-group-item" style="color:darkgreen;">
                             <a href="ownership.php" class="btn">
-                                <i class="fas fa-grip-vertical" style="color:darkgreen;"></i> Transfer Onwership</a>
+                                <i class="fas fa-grip-vertical" style="color:darkgreen;"></i> MARK OWNERSHIP</a>
                         </li>
                         <li class="list-group-item">
                             <a href="books.php" class="btn">
