@@ -57,7 +57,7 @@ if (isset($_GET["search_term"])) {
                         $search_category = $_GET['search_category'];
 
                         // Build the SQL query based on the selected category
-                        $sql = "SELECT books.id, books.title, books.author, books.isbn, 
+                        $sql = "SELECT books.id, books.title, books.author, books.isbn, books.location,
                            book_ownership.user_id, book_ownership.ownership_status
                     FROM books
                     LEFT JOIN book_ownership ON books.id = book_ownership.book_id
@@ -84,6 +84,7 @@ if (isset($_GET["search_term"])) {
                             echo '<th>ISBN</th>';
                             echo '<th>Owner</th>';
                             echo '<th>Status</th>';
+                            echo '<th>Location</th>';
                             echo '</tr>';
                             echo '</thead>';
                             echo '<tbody>';
@@ -95,6 +96,7 @@ if (isset($_GET["search_term"])) {
                                 echo '<td>' . $row['isbn'] . '</td>';
                                 echo '<td>' . getUserById($connection, $row['user_id']) . '</td>';
                                 echo '<td>' . $row['ownership_status'] . '</td>';
+                                echo '<td>' . $row['location'] . '</td>';
                                 echo '</tr>';
                             }
 

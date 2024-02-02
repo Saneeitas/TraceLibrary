@@ -69,7 +69,7 @@ require "inc/header.php";
                         }
                     }
 
-                    $sql = "SELECT books.id, books.title, books.author, books.isbn, 
+                    $sql = "SELECT books.id, books.title, books.author, books.isbn, books.location, 
                        book_ownership.user_id, book_ownership.ownership_status
                 FROM books
                 LEFT JOIN book_ownership ON books.id = book_ownership.book_id";
@@ -86,6 +86,7 @@ require "inc/header.php";
                             echo '<th>ISBN</th>';
                             echo '<th>Owner</th>';
                             echo '<th>Status</th>';
+                            echo '<th>Location</th>';
                             echo '</tr>';
                             echo '</thead>';
                             echo '<tbody>';
@@ -100,6 +101,7 @@ require "inc/header.php";
                                 echo '<td>' . $row['isbn'] . '</td>';
                                 echo '<td>' . getUserById($connection, $row['user_id']) . '</td>';
                                 echo '<td>' . $row['ownership_status'] . '</td>';
+                                echo '<td>' . $row['location'] . '</td>';
                                 echo '</tr>';
                             }
 

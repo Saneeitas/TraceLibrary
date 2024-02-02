@@ -31,6 +31,10 @@ require "inc/header.php"; ?>
                 <ul class="list-group">
                     <div>
                         <li class="list-group-item" style="color:darkgreen;">
+                            <a href="dashboard.php" class="btn">
+                                <i class="fas fa-grip-vertical" style="color:darkgreen;"></i> HOME</a>
+                        </li>
+                        <li class="list-group-item" style="color:darkgreen;">
                             <a href="ownership.php" class="btn">
                                 <i class="fas fa-grip-vertical" style="color:darkgreen;"></i> MARK OWNERSHIP</a>
                         </li>

@@ -205,13 +205,14 @@ if (isset($_POST["new_book"])) {
     $author = $_POST['author'];
     $isbn = $_POST['isbn'];
     $user_id = $_SESSION['user']['id'];
+    $location = isset($_POST["location"]) ? $_POST["location"] : null;
 
     // Insert data into the 'books' table
-    $sql = "INSERT INTO books (user_id,title, author, isbn) VALUES (?, ?, ?, ?)";
+    $sql = "INSERT INTO books (user_id,title, author, isbn, location) VALUES (?, ?, ?, ?,?)";
     $stmt = mysqli_prepare($connection, $sql);
 
     // Bind the parameters to the statement
-    mysqli_stmt_bind_param($stmt, "sssi", $user_id, $title, $author, $isbn);
+    mysqli_stmt_bind_param($stmt, "sssis", $user_id, $title, $author, $isbn, $location);
 
     // Execute the statement
     $result = mysqli_stmt_execute($stmt);
