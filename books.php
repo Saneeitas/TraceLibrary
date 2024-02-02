@@ -75,7 +75,8 @@ require "inc/header.php"; ?>
                         </thead>
                         <tbody>
                             <?php
-                            $sql = "SELECT * FROM books";
+                            $id = $_SESSION["user"]["id"];
+                            $sql = "SELECT * FROM books WHERE user_id='$id' ";
                             $query = mysqli_query($connection, $sql);
                             $counter = 1;
                             while ($result = mysqli_fetch_assoc($query)) {

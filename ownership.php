@@ -11,18 +11,7 @@ if (!isset($_SESSION["user"])) {
 
 include 'inc/connection.php';
 
-// Retrieve books belonging to the current user
-$userId = $_SESSION['user']["id"];
-$sqlGetUserBooks = "SELECT books.id, books.title FROM books
-                    JOIN book_ownership ON books.id = book_ownership.book_id
-                    WHERE book_ownership.user_id = '$userId'";
-$resultUserBooks = mysqli_query($connection, $sqlGetUserBooks);
 
-if ($resultUserBooks) {
-    $userBooks = mysqli_fetch_all($resultUserBooks, MYSQLI_ASSOC);
-} else {
-    $error = "Error fetching user's books: " . mysqli_error($connection);
-}
 
 
 // Retrieve all users
@@ -72,7 +61,7 @@ require "inc/header.php"; ?>
 
             <div class="col-9">
                 <div class="container">
-                    <h6>Transfer Boook Onwership</h6>
+                    <h6>Mark Book Ownership</h6>
                     <?php
                     if (isset($error)) {
                     ?>
@@ -93,15 +82,33 @@ require "inc/header.php"; ?>
                             <div class="col-6">
                                 <div class="form-group">
                                     <label for="">Book: </label>
-                                    <select name="book_id" class="form-select" selected required>
-                                        <?php if (empty($userBooks)) : ?>
-                                            <option value="" selected disabled>No books found</option>
-                                        <?php else : ?>
-                                            <option value="" selected disabled hidden>Select a book</option>
-                                            <?php foreach ($userBooks as $book) : ?>
-                                                <option value="<?php echo $book['id']; ?>"><?php echo $book['title']; ?></option>
-                                            <?php endforeach; ?>
-                                        <?php endif; ?>
+                                    <select name="book_id" class="form-select" required>
+                                        <?php
+                                        // Include your database connection script here
+                                        // Example: include 'db_connection.php';
+
+                                        session_start();
+                                        $user_id = $_SESSION['user']['id'];
+
+                                        $sql = "SELECT id, title FROM books WHERE user_id = ?";
+                                        $stmt = mysqli_prepare($connection, $sql);
+                                        mysqli_stmt_bind_param($stmt, "i", $user_id);
+                                        mysqli_stmt_execute($stmt);
+                                        $result = mysqli_stmt_get_result($stmt);
+
+                                        // Check if there are no books found
+                                        if (mysqli_num_rows($result) === 0) {
+                                            echo "<option value='' disabled>No books found</option>";
+                                        } else {
+                                            // Display books in the dropdown
+                                            while ($row = mysqli_fetch_assoc($result)) {
+                                                echo "<option value='{$row['id']}'>{$row['title']}</option>";
+                                            }
+                                        }
+
+                                        // Close the statement
+                                        mysqli_stmt_close($stmt);
+                                        ?>
                                     </select>
 
                                 </div>
@@ -112,11 +119,10 @@ require "inc/header.php"; ?>
                         <div class="row">
                             <div class="col-6">
                                 <div class="form-group">
-                                    <label for="">User: </label>
-                                    <select name="new_owner_id" class="form-select" required>
-                                        <?php foreach ($allUsers as $user) : ?>
-                                            <option value="<?php echo $user['id']; ?>"><?php echo $user['name']; ?></option>
-                                        <?php endforeach; ?>
+                                    <label for="ownership_status">Select Status:</label>
+                                    <select name="ownership_status" class="form-select" required>
+                                        <option value="owned">Owned</option>
+                                        <option value="borrowed">Borrowed</option>
                                     </select>
                                 </div>
                             </div>
@@ -124,7 +130,7 @@ require "inc/header.php"; ?>
                         </div>
                         <div class="form-group">
                             <button type="submit" name="transfer" class="btn btn-sm text-light my-2" style="background-color:darkgreen;">
-                                Transfer <i class="fas fa-plus"></i></button>
+                                Mark Ownership <i class="fas fa-plus"></i></button>
                         </div>
                 </div>
                 </form>

@@ -123,26 +123,30 @@ if (isset($_POST["login"])) {
 }
 
 if (isset($_POST["transfer"])) {
-    
-    $bookId = $_POST['book_id']; 
-    $newOwnerId = $_POST['new_owner_id']; 
 
-    // Update ownership in the database
-    $sqlTransferOwnership = "UPDATE book_ownership SET user_id = '$newOwnerId', ownership_status = 'borrowed' WHERE book_id = '$bookId'";
+    // Retrieve form data
+    $book_id = $_POST['book_id'];
+    $user_id = $_SESSION['user']['id'];
+    $ownership_status = $_POST['ownership_status'];
 
-   
+    // Insert ownership data into the 'book_ownership' table
+    $sql = "INSERT INTO book_ownership (user_id, book_id, ownership_status) VALUES (?, ?, ?)";
+    $stmt = mysqli_prepare($connection, $sql);
 
-    if ($connection->connect_error) {
-        die("Connection failed: " . $connection->connect_error);
-    }
+    // Bind the parameters to the statement
+    mysqli_stmt_bind_param($stmt, "iss", $user_id, $book_id, $ownership_status);
 
-    if ($connection->query($sqlTransferOwnership) === TRUE) {
-        $success = "Ownership transferred successfully!";
+    // Execute the statement
+    $result = mysqli_stmt_execute($stmt);
+
+    if ($result) {
+        $success = "Ownership marked successfully!";
     } else {
-        echo "Error: " . $sqlTransferOwnership . "<br>" . $connection->error;
+        $error = "Error: " . mysqli_error($connection);
     }
 
-    $connection->close();
+    // Close the statement
+    mysqli_stmt_close($stmt);
 }
 
 if (isset($_GET["delete_course"]) && !empty($_GET["delete_course"])) {
@@ -173,34 +177,30 @@ if (isset($_POST["edit_course"])) {
 
 
 if (isset($_POST["new_book"])) {
-    $title = $_POST["title"];
-    $author = $_POST["author"];
-    $isbn = $_POST["isbn"];
+    // Retrieve form data
+    $title = $_POST['title'];
+    $author = $_POST['author'];
+    $isbn = $_POST['isbn'];
+    $user_id = $_SESSION['user']['id'];
 
     // Insert data into the 'books' table
-    $sql = "INSERT INTO books(title, author, isbn) VALUES('$title', '$author', '$isbn')";
-    $query = mysqli_query($connection, $sql);
+    $sql = "INSERT INTO books (user_id,title, author, isbn) VALUES (?, ?, ?, ?)";
+    $stmt = mysqli_prepare($connection, $sql);
 
-    if ($query) {
-        // Get the ID of the inserted book
-        $bookId = mysqli_insert_id($connection);
+    // Bind the parameters to the statement
+    mysqli_stmt_bind_param($stmt, "sssi", $user_id, $title, $author, $isbn);
 
-        $userId = $_SESSION["user"]["id"];
+    // Execute the statement
+    $result = mysqli_stmt_execute($stmt);
 
-
-        $sqlOwnership = "INSERT INTO book_ownership (user_id, book_id, ownership_status) VALUES ('$userId', '$bookId', 'owned')";
-        $queryOwnership = mysqli_query($connection, $sqlOwnership);
-
-        if ($queryOwnership) {
-            $success = "Book Added Successfully";
-        } else {
-
-            $error = "Unable to add Book (Ownership Error)";
-        }
+    if ($result) {
+        $success = "Book added successfully!";
     } else {
-
-        $error = "Unable to add Book";
+        $error = "Error: " . mysqli_error($connection);
     }
+
+    // Close the statement
+    mysqli_stmt_close($stmt);
 }
 
 
