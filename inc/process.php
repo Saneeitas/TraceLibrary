@@ -30,9 +30,6 @@ if (isset($_POST["register"])) {
 // Function to sanitize input to prevent SQL injection and XSS
 function sanitizeInput($input)
 {
-    // Implement your input sanitization logic here
-    // For example, use mysqli_real_escape_string() for SQL injection prevention
-    // Use htmlspecialchars() for XSS prevention
     return $input;
 }
 
@@ -63,27 +60,6 @@ function insertUser($name, $email, $password)
     return $query;
 }
 
-
-// if(isset($_POST["register"])){
-
-//     $name = $_POST["name"];
-//     $email = $_POST["email"];
-//     $password = $_POST["password"];
-//     $encrypt_password = md5($password);
-
-//     //check if user exist
-//     $sql_check = "SELECT * FROM users WHERE email = '$email'";
-//     $query_check = mysqli_query($connection,$sql_check);
-//     if(mysqli_fetch_assoc($query_check)){
-//         //user exists
-//         $error = "User already exist";
-//     }else{
-//          //insert into DB
-//         $sql = "INSERT INTO users(name,email,password) VALUES('$name','$email','$encrypt_password')";
-//         $query = mysqli_query($connection,$sql) or die("Cant save data");
-//         $success = "Registration successfully";
-//     }  
-// }
 
 if (isset($_POST["login"])) {
 
@@ -170,32 +146,6 @@ if (isset($_POST["transfer"])) {
 
     // Close the statement for existing ownership check
     mysqli_stmt_close($existingOwnershipStmt);
-}
-
-if (isset($_GET["delete_course"]) && !empty($_GET["delete_course"])) {
-    $id = $_GET["delete_course"];
-    //sql
-    $sql = "DELETE FROM courses WHERE id = '$id'";
-    $query = mysqli_query($connection, $sql);
-
-    if ($query) {
-        $success = "course deleted";
-    } else {
-        $error = "Unable to delete course";
-    }
-}
-
-if (isset($_POST["edit_course"])) {
-    $name = $_POST["name"];
-    $edit_id = $_GET["edit_id"];
-    //sql
-    $sql = "UPDATE courses SET name = '$name' WHERE id = '$edit_id'";
-    $query = mysqli_query($connection, $sql);
-    if ($query) {
-        $success = "course updated";
-    } else {
-        $error = "Unable to update course";
-    }
 }
 
 
