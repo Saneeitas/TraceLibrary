@@ -1,7 +1,7 @@
-<nav class="navbar navbar-light rounded sticky-top" style="background-color:darkgreen;">
+<nav class="navbar navbar-light rounded sticky-top" style="background-color:#74d7ad;">
     <div class="container-fluid">
         <a class="navbar-brand text-light" href="index.php">
-            <h5> <i class="fas fa-bars"></i> TraceLibrary </h5>
+            <h5> <i class="fas fa-bars"></i> </h5>
 
         </a>
         <div class="d-flex">

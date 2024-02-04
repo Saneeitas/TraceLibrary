@@ -13,13 +13,13 @@ require "inc/header.php";
 <div class="container">
     <?php require './pages/header-home.php'; ?>
     <div class="container-fluid my-3">
-        <img class="d-block mx-auto mb-4" src="./img/p1.PNG" style="border-radius: 15px" alt="" width="950" height="450">
+        <img class="d-block mx-auto mb-4" src="./img/traceLibrary2.PNG" style="border-radius: 15px" alt="" width="950" height="450">
         <div class="row">
             <div class="col-6">
                 <div class="p-3 my-3 text-center">
-                    <h3 class="display-5 fw-bold" style="color: darkgreen">PassBank</h3>
+                    <h3 class="display-5 fw-bold" style="color: #74d7ad;">TraceLibrary</h3>
                     <div class="col-lg-6 mx-auto">
-                        <p class="lead mb-4">A Platform for sharing pass questions, Quickly get access to all Pass Questions in different courses and sessions.</p>
+                        <p class="lead mb-4">An innovative Book Ownership Tracking System designed to simplify the process of finding book owners, including libraries and individuals.</p>
                         <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
 
                         </div>
@@ -28,16 +28,16 @@ require "inc/header.php";
             </div>
             <div class="col-6">
                 <div class="p-3 my-3 text-center">
-                    <h3 class="display-5 fw-bold" style="color: darkgreen">Why Us</h3>
+                    <h3 class="display-5 fw-bold" style="color: #74d7ad;">Why Us</h3>
                     <div class="col-lg-6 mx-auto">
-                        <p class="lead mb-4">offers a comprehensive question bank, verified content, and a supportive community, making it the ideal platform. </p>
+                        <p class="lead mb-4">Enhance the accessibility and sharing of books within communities. Whether you're searching for a library that has a specific book or trying to find the current owner of a borrowed book </p>
                         <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
 
                         </div>
                     </div>
                 </div>
             </div>
-            <img class="d-block mx-auto mb-4" src="./img/p2.PNG" style="border-radius:15px" alt="" width="950" height="450">
+
 
         </div>
     </div>
@@ -46,7 +46,7 @@ require "inc/header.php";
 
             <div class="col">
                 <div class="border p-3 my-3">
-                    <h4 class="list-group-item" style="color:darkgreen;">
+                    <h4 class="list-group-item" style="color:#74d7ad;;">
                         <i class="fas fa-grip-vertical"></i> BOOKS
                     </h4>
 
