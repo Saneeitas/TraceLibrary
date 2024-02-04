@@ -43,21 +43,21 @@ require "inc/header.php"; ?>
             <div class="col-3">
                 <ul class="list-group">
                     <div>
-                        <li class="list-group-item" style="color:darkgreen;">
+                        <li class="list-group-item" style="color:#74d7ad;">
                             <a href="dashboard.php" class="btn">
-                                <i class="fas fa-grip-vertical" style="color:darkgreen;"></i> HOME</a>
+                                <i class="fas fa-grip-vertical" style="color:#74d7ad;"></i> HOME</a>
                         </li>
-                        <li class="list-group-item" style="color:darkgreen;">
+                        <li class="list-group-item" style="color:#74d7ad;">
                             <a href="ownership.php" class="btn">
-                                <i class="fas fa-grip-vertical" style="color:darkgreen;"></i> MARK OWNERSHIP</a>
+                                <i class="fas fa-map-marked-alt" style="color:#74d7ad;"></i> MARK OWNERSHIP</a>
                         </li>
                         <li class="list-group-item">
                             <a href="books.php" class="btn text-danger">
-                                <i class="fas fa-boxes" style="color:darkgreen;"></i> BOOKS</a>
+                                <i class="fas fa-book" style="color:#74d7ad;"></i> BOOKS</a>
                         </li class="list-group-item">
                         <li class="list-group-item">
                             <a href="new-book.php" class="btn">
-                                <i class="fas fa-plus" style="color:darkgreen;"></i> ADD BOOK</a>
+                                <i class="fas fa-plus" style="color:#74d7ad;"></i> ADD BOOK</a>
                         </li>
                     </div>
                 </ul>
@@ -111,8 +111,8 @@ require "inc/header.php"; ?>
                             </div>
                         </div>
                         <div class="form-group">
-                            <button type="submit" name="update_book" class="btn btn-sm my-2 text-light" style="background-color:darkgreen;">
-                                Update Book</button>
+                            <button type="submit" name="update_book" class="btn btn-sm my-2 text-light" style="background-color:#74d7ad;">
+                                <i class="far fa-edit"></i> Update Book</button>
                         </div>
                 </div>
                 </form>

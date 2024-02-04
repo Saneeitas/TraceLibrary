@@ -28,7 +28,7 @@ if (isset($_GET["search_term"])) {
                                 <option value="isbn">ISBN</option>
                             </select>
                         </div>
-                        <button type="submit" class="btn text-dark mt-2" style="background-color:#ffffc2;">Search</button>
+                        <button type="submit" class="btn text-dark mt-2" style="background-color:#74d7ad;">Search</button>
                     </form>
                 </div>
             </div>
