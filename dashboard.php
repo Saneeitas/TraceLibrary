@@ -5,10 +5,7 @@ session_start();
 if (!isset($_SESSION["user"])) {
     header("location: login.php");
 }
-//check if logged in as user
-// if($_SESSION["user"]["role"] == "user"){
-//     header("location: index.php");
-// }
+
 //header links
 require "inc/header.php"; ?>
 
