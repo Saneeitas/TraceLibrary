@@ -1,12 +1,10 @@
 <?php  
 session_start();
-//header links
  require "inc/header.php"; ?>
 
  <div class="container">
 
  <?php
- //header content
  require './pages/header-home.php';
  include 'inc/process.php'; ?>
 
