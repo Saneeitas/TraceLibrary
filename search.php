@@ -106,7 +106,8 @@ if (isset($_GET["search_term"])) {
                             echo '<p>No books found.</p>';
                         }
 
-                        // Close the statement
+                        // Close the statement con
+                        
                         mysqli_stmt_close($stmt);
                     }
                     ?>
