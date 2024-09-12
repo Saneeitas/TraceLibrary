@@ -1,11 +1,6 @@
 <?php
 session_start();
 
-//check if logged in as user
-// if($_SESSION["user"]["role"] == "user"){
-//     header("location: all-questions.php");
-// }
-
 require "inc/process.php";
 require "inc/header.php";
 ?>
